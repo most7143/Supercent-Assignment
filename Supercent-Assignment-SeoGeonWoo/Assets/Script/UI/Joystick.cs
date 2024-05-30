@@ -2,13 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Joystick : MonoBehaviour
 {
-    public float MoveSpeed = 1;
-
-    private void Start()
-    {
-    }
+    public RectTransform Rect;
+    public RectTransform Stick;
 
     private void FixedUpdate()
     {
