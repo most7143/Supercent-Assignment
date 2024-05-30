@@ -817,6 +817,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Joystick: {fileID: 0}
   Rigid: {fileID: 333445987}
+  Animator: {fileID: 2929470082773406066}
   MoveSpeed: 3
 --- !u!54 &333445987
 Rigidbody:
@@ -1017,7 +1018,7 @@ Animator:
   m_GameObject: {fileID: 8679193474256128519}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 18543db88db5f754c9b46b7c44ff32ec, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

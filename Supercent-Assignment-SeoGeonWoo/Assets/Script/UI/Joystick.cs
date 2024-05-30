@@ -5,6 +5,8 @@ public class Joystick : MonoBehaviour
     public RectTransform Rect;
     public RectTransform Stick;
 
+    public bool IsActivate = false;
+
     [Range(0, 150)]
     public float Range;
 
@@ -12,7 +14,10 @@ public class Joystick : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
+        if (IsActivate)
+        {
+            Move();
+        }
     }
 
     public void RestPosition()

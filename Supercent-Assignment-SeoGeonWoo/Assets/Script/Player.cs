@@ -6,6 +6,8 @@ public class Player : MonoBehaviour
 
     public Rigidbody Rigid;
 
+    public Animator Animator;
+
     public float MoveSpeed = 1;
 
     private bool isMove = false;
@@ -15,6 +17,8 @@ public class Player : MonoBehaviour
     public void MoveOn()
     {
         isMove = true;
+
+        Animator.SetBool("IsMove", true);
     }
 
     public void MoveOff()
@@ -22,6 +26,7 @@ public class Player : MonoBehaviour
         isMove = false;
         direction = Vector2.zero;
         Rigid.velocity = Vector3.zero;
+        Animator.SetBool("IsMove", false);
     }
 
     private void FixedUpdate()
@@ -31,6 +36,15 @@ public class Player : MonoBehaviour
             direction = Joystick.GetStickDir().normalized;
 
             Rigid.velocity = new Vector3(direction.x, 0, direction.y) * MoveSpeed;
+
+            Look();
         }
+    }
+
+    private void Look()
+    {
+        Quaternion rot = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.y));
+
+        transform.rotation = rot;
     }
 }
