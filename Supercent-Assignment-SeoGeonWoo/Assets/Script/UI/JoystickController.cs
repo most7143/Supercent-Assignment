@@ -4,6 +4,8 @@ public class JoystickController : MonoBehaviour
 {
     public Joystick Joystick;
 
+    public Player Player;
+
     public void Awake()
     {
         if (Joystick == null)
@@ -30,10 +32,12 @@ public class JoystickController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             OnJoystick();
+            Player.MoveOn();
         }
         else if (Input.GetMouseButtonUp(0))
         {
             OffJoystick();
+            Player.MoveOff();
         }
     }
 }

@@ -23,10 +23,13 @@ public class Joystick : MonoBehaviour
 
     public void Move()
     {
+        Stick.anchoredPosition3D = GetStickDir() + centerLocalPosition;
+    }
+
+    public Vector3 GetStickDir()
+    {
         Vector3 inputDir = Input.mousePosition - (Vector3)Rect.anchoredPosition;
 
-        Vector3 clampedDir = inputDir.magnitude < Range ? inputDir : inputDir.normalized * Range;
-
-        Stick.anchoredPosition3D = clampedDir + centerLocalPosition;
+        return inputDir.magnitude < Range ? inputDir : inputDir.normalized * Range;
     }
 }
