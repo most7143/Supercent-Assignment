@@ -1,6 +1,4 @@
-using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class JoystickController : MonoBehaviour
 {
@@ -18,9 +16,8 @@ public class JoystickController : MonoBehaviour
 
     public void OnJoystick()
     {
+        Joystick.RestPosition();
         Joystick.gameObject.SetActive(true);
-
-        Joystick.Rect.anchoredPosition3D = Input.mousePosition;
     }
 
     public void OffJoystick()
