@@ -10,32 +10,32 @@ public class Player : MonoBehaviour
 
     public float MoveSpeed = 1;
 
-    private bool isMove = false;
+    private bool _isMove = false;
 
-    private Vector2 direction;
+    private Vector2 _direction;
 
     public void MoveOn()
     {
-        isMove = true;
+        _isMove = true;
 
         Animator.SetBool("IsMove", true);
     }
 
     public void MoveOff()
     {
-        isMove = false;
-        direction = Vector2.zero;
+        _isMove = false;
+        _direction = Vector2.zero;
         Rigid.velocity = Vector3.zero;
         Animator.SetBool("IsMove", false);
     }
 
     private void FixedUpdate()
     {
-        if (isMove)
+        if (_isMove)
         {
-            direction = Joystick.GetStickDir().normalized;
+            _direction = Joystick.GetStickDir().normalized;
 
-            Rigid.velocity = new Vector3(direction.x, 0, direction.y) * MoveSpeed;
+            Rigid.velocity = new Vector3(_direction.x, 0, _direction.y) * MoveSpeed;
 
             Look();
         }
@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
 
     private void Look()
     {
-        Quaternion rot = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.y));
+        Quaternion rot = Quaternion.LookRotation(new Vector3(_direction.x, 0, _direction.y));
 
         transform.rotation = rot;
     }

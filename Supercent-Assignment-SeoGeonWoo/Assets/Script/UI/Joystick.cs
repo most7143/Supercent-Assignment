@@ -10,7 +10,7 @@ public class Joystick : MonoBehaviour
     [Range(0, 150)]
     public float Range;
 
-    private Vector3 centerLocalPosition = new Vector3(140f, 35f, 0f);
+    private Vector3 _centerLocalPosition = new Vector3(140f, 35f, 0f);
 
     private void FixedUpdate()
     {
@@ -23,12 +23,12 @@ public class Joystick : MonoBehaviour
     public void RestPosition()
     {
         Rect.anchoredPosition3D = Input.mousePosition;
-        Stick.anchoredPosition3D = centerLocalPosition;
+        Stick.anchoredPosition3D = _centerLocalPosition;
     }
 
     public void Move()
     {
-        Stick.anchoredPosition3D = GetStickDir() + centerLocalPosition;
+        Stick.anchoredPosition3D = GetStickDir() + _centerLocalPosition;
     }
 
     public Vector3 GetStickDir()
