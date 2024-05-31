@@ -31,22 +31,25 @@ public class JoystickController : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (false == GameManager.Instance.IsMoveLock)
         {
-            OnJoystick();
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            OffJoystick();
-        }
+            if (Input.GetMouseButtonDown(0))
+            {
+                OnJoystick();
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                OffJoystick();
+            }
 
-        if (IsMoveJoystick())
-        {
-            Player.MoveOn();
-        }
-        else
-        {
-            Player.MoveOff();
+            if (IsMoveJoystick())
+            {
+                Player.MoveOn();
+            }
+            else
+            {
+                Player.MoveOff();
+            }
         }
     }
 

@@ -1,18 +1,42 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public Player Player;
+
+    public JoystickController JoystickController;
+
+    private static GameManager _instance;
+
+    public bool IsMoveLock { get; set; }
+
+    public static GameManager Instance
     {
-        
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = new GameManager();
+            }
+
+            return _instance;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Awake()
     {
-        
+        _instance = this;
+    }
+
+    public void LockMove()
+    {
+        JoystickController.OffJoystick();
+        IsMoveLock = true;
+        Player.MoveOff();
+    }
+
+    public void UnlockMove()
+    {
+        IsMoveLock = false;
     }
 }

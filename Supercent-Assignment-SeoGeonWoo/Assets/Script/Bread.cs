@@ -1,19 +1,21 @@
 using UnityEngine;
 
-public enum ObejectStates
+public enum ObjectStates
 {
     None,
-    InBox,
+    InBreadBox,
+    InBreadBag,
     OnHand,
 }
 
 public class Bread : MonoBehaviour
 {
     public int SID;
-    public ObejectStates State;
+    public ObjectStates State;
     public bool IsActivate;
 
     public Rigidbody Rigid;
+    public BoxCollider Collider;
 
     public void Init(int sid)
     {
@@ -31,6 +33,18 @@ public class Bread : MonoBehaviour
     {
         IsActivate = false;
         gameObject.SetActive(false);
-        State = ObejectStates.None;
+        State = ObjectStates.None;
+    }
+
+    public void HoldOn()
+    {
+        Collider.isTrigger = true;
+        Rigid.isKinematic = true;
+    }
+
+    public void HoldOff()
+    {
+        Collider.isTrigger = false;
+        Rigid.isKinematic = false;
     }
 }

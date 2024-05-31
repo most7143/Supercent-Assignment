@@ -105,6 +105,7 @@ MonoBehaviour:
   State: 0
   IsActivate: 0
   Rigid: {fileID: 2437039557812207112}
+  Collider: {fileID: 4537312754224214921}
 --- !u!54 &2437039557812207112
 Rigidbody:
   m_ObjectHideFlags: 0

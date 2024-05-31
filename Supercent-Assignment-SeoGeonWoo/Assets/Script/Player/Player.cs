@@ -1,33 +1,20 @@
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public enum PlayerStates
+{
+    Default,
+    Carry,
+}
+
+public partial class Player : MonoBehaviour
 {
     public Joystick Joystick;
 
     public Rigidbody Rigid;
 
-    public Animator Animator;
-
     public float MoveSpeed = 1;
 
-    private bool _isMove = false;
-
     private Vector2 _direction;
-
-    public void MoveOn()
-    {
-        _isMove = true;
-
-        Animator.SetBool("IsMove", true);
-    }
-
-    public void MoveOff()
-    {
-        _isMove = false;
-        _direction = Vector2.zero;
-        Rigid.velocity = Vector3.zero;
-        Animator.SetBool("IsMove", false);
-    }
 
     private void FixedUpdate()
     {

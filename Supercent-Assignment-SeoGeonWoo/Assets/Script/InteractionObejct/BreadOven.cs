@@ -11,7 +11,9 @@ public class BreadOven : InteractionObejct
 
     public float Power;
 
-    private int currentCount;
+    public int CurrentCount { get; set; }
+
+    private Coroutine _coroutine;
 
     public void Start()
     {
@@ -25,28 +27,44 @@ public class BreadOven : InteractionObejct
 
     private IEnumerator ProcessSpawn()
     {
-        while (currentCount < MaxCount)
-        {
-            yield return new WaitForSeconds(Interval);
+        yield return new WaitForSeconds(Interval);
 
-            Bread bread = ObjectPoolManager.Instance.Spawn();
+        Bread bread = ObjectPoolManager.Instance.Spawn();
 
-            bread.transform.position = SpawnPoint.transform.position;
+        bread.transform.position = SpawnPoint.transform.position;
 
-            yield return new WaitForSeconds(Interval * 0.5f);
+        yield return new WaitForSeconds(Interval * 0.5f);
 
-            SpawnForce(bread);
+        SpawnForce(bread);
 
-            currentCount++;
-        }
+        bread.State = ObjectStates.InBreadBox;
+
+        CurrentCount++;
+
+        yield return new WaitUntil(() => CurrentCount < MaxCount);
+
+        StartCoroutine(ProcessSpawn());
     }
 
     private void SpawnForce(Bread bread)
     {
-        float rand = Random.Range(-0.2f, 0.2f);
+        float rand = Random.Range(-0.1f, 0.1f);
 
         Vector3 dir = new Vector3(transform.forward.x + rand, transform.forward.y, transform.forward.z);
 
         bread.Rigid.AddForce(dir * Power, ForceMode.Impulse);
+    }
+
+    public bool TryCarry()
+    {
+        if (CurrentCount > 0)
+        {
+            if (GameManager.Instance.Player.CurrentTakeCount < MaxCount)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
