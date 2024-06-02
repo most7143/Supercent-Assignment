@@ -90,4 +90,16 @@ public class ObjectPoolManager : MonoBehaviour
             Breads[sid].Deactivate();
         }
     }
+
+    public void Despawn(Bread bread)
+    {
+        for (int i = 0; i <= Breads.Count; i++)
+        {
+            if (Breads[i] == bread)
+            {
+                Breads[i].Deactivate();
+                break;
+            }
+        }
+    }
 }

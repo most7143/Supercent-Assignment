@@ -27,10 +27,12 @@ public partial class Player
     public void CarryOn()
     {
         Animator.SetBool("IsStack", true);
+        IsStack = true;
     }
 
     public void CarryOff()
     {
         Animator.SetBool("IsStack", false);
+        IsStack = false;
     }
 }

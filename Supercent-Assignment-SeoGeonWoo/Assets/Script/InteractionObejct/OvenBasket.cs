@@ -46,7 +46,6 @@ public class OvenBasket : InteractionObejct
             ObjectPoolManager.Instance.Despawn(sid);
             SpawnToPlayerHand();
             Oven.CurrentCount--;
-            Player.CurrentTakeCount++;
             yield return new WaitForSeconds(0.2f);
         }
 
@@ -64,6 +63,7 @@ public class OvenBasket : InteractionObejct
             bread.transform.rotation = Quaternion.identity;
             bread.HoldOn();
             bread.transform.parent = Player.transform;
+            Player.AddBread(bread);
         }
     }
 }
