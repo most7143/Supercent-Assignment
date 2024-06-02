@@ -29,7 +29,7 @@ public class BreadOven : InteractionObejct
     {
         yield return new WaitForSeconds(Interval);
 
-        Bread bread = ObjectPoolManager.Instance.Spawn();
+        Bread bread = ObjectPoolManager.Instance.SpawnBread();
 
         bread.transform.position = SpawnPoint.transform.position;
 

@@ -1,6 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ObjectTypes
+{
+    None,
+    Quest,
+    Bread,
+    Money
+}
+
 public class ObjectPoolManager : MonoBehaviour
 {
     private static ObjectPoolManager _instance;
@@ -8,6 +16,12 @@ public class ObjectPoolManager : MonoBehaviour
     public Dictionary<int, Bread> Breads = new();
 
     public GameObject Bread;
+
+    public Dictionary<int, Guest> Guests = new();
+
+    public GameObject Guest;
+
+    public GameObject Money;
 
     public static ObjectPoolManager Instance
     {
@@ -39,6 +53,14 @@ public class ObjectPoolManager : MonoBehaviour
             Breads.Add(i, bread);
             bread.Init(i);
         }
+
+        for (int i = 0; i < 10; i++)
+        {
+            Guest guest = Instantiate(Guest, Vector3.zero, Quaternion.identity).GetComponent<Guest>();
+            guest.transform.parent = transform;
+            Guests.Add(i, guest);
+            guest.Init();
+        }
     }
 
     public int FindSID(ObjectStates state)
@@ -54,7 +76,7 @@ public class ObjectPoolManager : MonoBehaviour
         return -1;
     }
 
-    public Bread Spawn()
+    public Bread SpawnBread()
     {
         for (int i = 0; i <= Breads.Count; i++)
         {
@@ -62,6 +84,20 @@ public class ObjectPoolManager : MonoBehaviour
             {
                 Breads[i].Activate();
                 return Breads[i];
+            }
+        }
+
+        return null;
+    }
+
+    public Guest SpawnGuest()
+    {
+        for (int i = 0; i <= Guests.Count; i++)
+        {
+            if (false == Guests[i].IsActivate)
+            {
+                Guests[i].Activate();
+                return Guests[i];
             }
         }
 
@@ -83,7 +119,7 @@ public class ObjectPoolManager : MonoBehaviour
         return null;
     }
 
-    public void Despawn(int sid)
+    public void DespawnBread(int sid)
     {
         if (sid != -1)
         {
@@ -98,6 +134,18 @@ public class ObjectPoolManager : MonoBehaviour
             if (Breads[i] == bread)
             {
                 Breads[i].Deactivate();
+                break;
+            }
+        }
+    }
+
+    public void Despawn(Guest guest)
+    {
+        for (int i = 0; i <= Guests.Count; i++)
+        {
+            if (Guests[i] == guest)
+            {
+                Guests[i].Deactivate();
                 break;
             }
         }

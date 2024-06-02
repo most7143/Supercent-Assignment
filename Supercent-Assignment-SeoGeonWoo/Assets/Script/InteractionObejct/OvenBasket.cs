@@ -43,7 +43,7 @@ public class OvenBasket : InteractionObejct
             }
 
             int sid = ObjectPoolManager.Instance.FindSID(ObjectStates.InBreadBox);
-            ObjectPoolManager.Instance.Despawn(sid);
+            ObjectPoolManager.Instance.DespawnBread(sid);
             SpawnToPlayerHand();
             Oven.CurrentCount--;
             yield return new WaitForSeconds(0.2f);

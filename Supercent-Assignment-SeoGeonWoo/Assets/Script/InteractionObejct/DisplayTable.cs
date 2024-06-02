@@ -78,7 +78,7 @@ public class DisplayTable : InteractionObejct
 
     private void SpawnToTable()
     {
-        Bread bread = ObjectPoolManager.Instance.Spawn();
+        Bread bread = ObjectPoolManager.Instance.SpawnBread();
 
         if (bread != null)
         {

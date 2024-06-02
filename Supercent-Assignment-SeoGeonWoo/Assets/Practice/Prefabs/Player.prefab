@@ -851,8 +851,10 @@ MonoBehaviour:
   Rigid: {fileID: 333445987}
   MoveSpeed: 3
   Animator: {fileID: 2929470082773406066}
-  TakePoint: {fileID: 8372364683648498127}
   State: 0
+  TakePoint: {fileID: 8372364683648498127}
+  TakeBreadY: 0
+  Breads: []
 --- !u!54 &333445987
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -867,7 +869,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!136 &7019930904986369076
 CapsuleCollider:

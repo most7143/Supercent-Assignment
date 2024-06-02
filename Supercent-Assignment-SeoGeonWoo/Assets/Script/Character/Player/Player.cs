@@ -6,15 +6,9 @@ public enum PlayerStates
     Carry,
 }
 
-public partial class Player : MonoBehaviour
+public partial class Player : Character
 {
     public Joystick Joystick;
-
-    public Rigidbody Rigid;
-
-    public float MoveSpeed = 1;
-
-    private Vector2 _direction;
 
     private void FixedUpdate()
     {
@@ -24,14 +18,7 @@ public partial class Player : MonoBehaviour
 
             Rigid.velocity = new Vector3(_direction.x, 0, _direction.y) * MoveSpeed;
 
-            Look();
+            _handler.Look(transform, _direction);
         }
-    }
-
-    private void Look()
-    {
-        Quaternion rot = Quaternion.LookRotation(new Vector3(_direction.x, 0, _direction.y));
-
-        transform.rotation = rot;
     }
 }
