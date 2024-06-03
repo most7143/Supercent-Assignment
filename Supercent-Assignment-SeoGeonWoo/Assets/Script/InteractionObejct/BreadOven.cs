@@ -13,8 +13,6 @@ public class BreadOven : InteractionObejct
 
     public int CurrentCount { get; set; }
 
-    private Coroutine _coroutine;
-
     public void Start()
     {
         Operate();

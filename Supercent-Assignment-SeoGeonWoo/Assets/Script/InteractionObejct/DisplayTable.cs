@@ -1,18 +1,56 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DisplayTable : InteractionObejct
+public partial class DisplayTable : InteractionObejct
 {
-    public List<DisplayPoint> DisplayPoints;
-
     public int MaxCount;
 
     private int _currentCount;
 
-    private Player Player
+    private void Update()
     {
-        get { return GameManager.Instance.Player; }
+        if (TryTakeable())
+        {
+            IsTakeable = true;
+        }
+        else
+        {
+            IsTakeable = false;
+        }
+    }
+
+    private bool TryTakeable()
+    {
+        if (_currentCount > 0)
+        {
+            int count = ObjectPoolManager.Instance.Guests.Count;
+            for (int i = 0; i < count; i++)
+            {
+                if (ObjectPoolManager.Instance.Guests[i].CurrentMovePoint == GuestMovePoints.DisplayTable
+                    && ObjectPoolManager.Instance.Guests[i].IsArrive)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private Guest[] GetTakeableGuests()
+    {
+        List<Guest> guests = new();
+
+        for (int i = 0; i < ObjectPoolManager.Instance.Guests.Count; i++)
+        {
+            if (ObjectPoolManager.Instance.Guests[i].IsArrive
+                && ObjectPoolManager.Instance.Guests[i].CurrentMovePoint == GuestMovePoints.DisplayTable)
+            {
+                guests.Add(ObjectPoolManager.Instance.Guests[i]);
+            }
+        }
+
+        return guests.ToArray();
     }
 
     public override void Operate()
@@ -42,67 +80,5 @@ public class DisplayTable : InteractionObejct
         }
 
         return false;
-    }
-
-    private void DropToTable()
-    {
-        GameManager.Instance.LockMove();
-        StartCoroutine(ProcessDrop());
-    }
-
-    private IEnumerator ProcessDrop()
-    {
-        int count = MaxCount - _currentCount;
-
-        for (int i = 0; i <= count; i++)
-        {
-            Player.RemoveBread();
-            SpawnToTable();
-            _currentCount++;
-
-            if (Player.CurrentTakeCount == 0 || MaxCount == _currentCount)
-            {
-                break;
-            }
-
-            yield return new WaitForSeconds(0.2f);
-        }
-
-        GameManager.Instance.UnlockMove();
-
-        if (Player.CurrentTakeCount == 0)
-        {
-            Player.CarryOff();
-        }
-    }
-
-    private void SpawnToTable()
-    {
-        Bread bread = ObjectPoolManager.Instance.SpawnBread();
-
-        if (bread != null)
-        {
-            bread.Rigid.velocity = Vector3.zero;
-
-            Transform emptyPoint = GetEmptyPoint();
-            bread.transform.position = emptyPoint.position;
-            bread.transform.rotation = Quaternion.identity;
-            bread.HoldOn();
-            bread.transform.parent = emptyPoint;
-        }
-    }
-
-    private Transform GetEmptyPoint()
-    {
-        for (int i = 0; i < DisplayPoints.Count; i++)
-        {
-            if (DisplayPoints[i].IsActivate == false)
-            {
-                DisplayPoints[i].IsActivate = true;
-
-                return DisplayPoints[i].transform;
-            }
-        }
-        return null;
     }
 }

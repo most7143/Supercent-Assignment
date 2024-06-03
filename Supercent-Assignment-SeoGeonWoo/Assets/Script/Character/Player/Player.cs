@@ -1,12 +1,6 @@
 using UnityEngine;
 
-public enum PlayerStates
-{
-    Default,
-    Carry,
-}
-
-public partial class Player : Character
+public class Player : Character
 {
     public Joystick Joystick;
 

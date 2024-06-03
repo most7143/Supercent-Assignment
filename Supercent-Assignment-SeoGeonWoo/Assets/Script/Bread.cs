@@ -4,7 +4,7 @@ public enum ObjectStates
 {
     None,
     InBreadBox,
-    InBreadBag,
+    OnDisplayTable,
     OnHand,
 }
 
