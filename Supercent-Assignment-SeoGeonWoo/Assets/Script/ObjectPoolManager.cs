@@ -212,6 +212,7 @@ public class ObjectPoolManager : MonoBehaviour
             if (Guests[i] == guest)
             {
                 Guests[i].Deactivate();
+
                 break;
             }
         }
@@ -223,7 +224,7 @@ public class ObjectPoolManager : MonoBehaviour
         {
             if (PaperBags[i] == paperBag)
             {
-                Guests[i].Deactivate();
+                PaperBags[i].Deactivate();
                 break;
             }
         }

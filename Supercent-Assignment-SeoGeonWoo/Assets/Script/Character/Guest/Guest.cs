@@ -13,19 +13,29 @@ public class Guest : Character
 
     public Vector3 UIOffset;
 
+    public Canvas UICanvas;
+
     public RectTransform UIRect;
 
     public Transform UINeedObject;
 
     public Image UIPayIcon;
 
+    public Image UiTableIcon;
+
     public TextMeshProUGUI UINeedCountText;
+
+    public bool IsEating;
+
+    public PaperBag PaperBag;
 
     public bool IsActivate { get; set; }
 
     public bool IsArrive;
     public Transform TargetPoint { get; set; }
     public Transform LookPoint { get; set; }
+
+    public Transform TargetDisplayPoint { get; set; }
 
     public GuestMovePoints CurrentMovePoint { get; set; }
 
@@ -51,27 +61,28 @@ public class Guest : Character
         if (IsArrive && CurrentMovePoint == GuestMovePoints.DisplayTable)
         {
             UIPayIcon.gameObject.SetActive(false);
+            UiTableIcon.gameObject.SetActive(false);
 
-            if (false == UIRect.gameObject.activeInHierarchy)
-            {
-                UIRect.gameObject.SetActive(true);
-            }
+            UICanvas.enabled = true;
 
             RefreshText();
         }
         else if (Breads.Count > 0)
         {
-            if (false == UIPayIcon.gameObject.activeInHierarchy)
+            UINeedObject.gameObject.SetActive(false);
+
+            if (false == IsEating)
             {
                 UIPayIcon.gameObject.SetActive(true);
+            }
+            else
+            {
+                UiTableIcon.gameObject.SetActive(true);
             }
         }
         else
         {
-            if (UIRect.gameObject.activeInHierarchy)
-            {
-                UIRect.gameObject.SetActive(false);
-            }
+            UICanvas.enabled = false;
         }
     }
 
@@ -89,10 +100,21 @@ public class Guest : Character
 
     public void Deactivate()
     {
+        UICanvas.enabled = false;
         IsActivate = false;
-        gameObject.SetActive(false);
+        IsArrive = false;
+        MaxTakeBreadCount = 0; gameObject.SetActive(false);
         CurrentMovePoint = GuestMovePoints.Center;
         MovePointCount = 0;
+        CurrentTakeCount = 0;
+
+        if (PaperBag != null)
+        {
+            ObjectPoolManager.Instance.Despawn(PaperBag);
+            PaperBag = null;
+        }
+
+        TargetDisplayPoint = null;
     }
 
     public void Move()
@@ -129,7 +151,16 @@ public class Guest : Character
         }
         else if (CurrentMovePoint == GuestMovePoints.Exit)
         {
+            Controller.CurrentCount--;
             ObjectPoolManager.Instance.Despawn(this);
+        }
+        else if (CurrentMovePoint == GuestMovePoints.EatingWaitPoint)
+        {
+            StartCoroutine(ProcessEatingSpaceToGuest());
+        }
+        else if (CurrentMovePoint == GuestMovePoints.EatingTable)
+        {
+            StartCoroutine(ProcessEatingGuest());
         }
         else
         {
@@ -139,11 +170,17 @@ public class Guest : Character
 
     private IEnumerator ProcessTakeBread()
     {
-        int rand = Random.Range(3, 6);
+        int rand = Random.Range(2, 4);
 
         MaxTakeBreadCount = rand;
 
         yield return new WaitUntil(() => MaxTakeBreadCount == CurrentTakeCount);
+
+        if (false == Controller.IsEating)
+        {
+            Controller.IsEating = true;
+            IsEating = true;
+        }
 
         IsArrive = false;
         NextPoint();
@@ -153,19 +190,16 @@ public class Guest : Character
     {
         yield return new WaitUntil(() => Controller.CounterTable.IsOperating);
 
-        int money = Breads[0].Price * CurrentTakeCount;
+        int money = GameData.Instance.BreadPrice * CurrentTakeCount;
 
         Controller.CounterTable.MoneyTrigger.Money += money;
 
         for (int i = Breads.Count - 1; i >= 0; i--)
         {
             ObjectPoolManager.Instance.Despawn(Breads[i]);
-            yield return new WaitForSeconds(0.3f);
         }
 
         IsArrive = false;
-
-        Breads.Clear();
 
         StartCoroutine(Controller.CounterTable.ProcessClose(this));
 
@@ -175,6 +209,43 @@ public class Guest : Character
         Controller.CounterTable.MoneyTrigger.DropMoney();
 
         NextPoint();
+    }
+
+    private IEnumerator ProcessEatingSpaceToGuest()
+    {
+        yield return new WaitUntil(() => GameData.Instance.UsingEatingSpace);
+
+        IsArrive = false;
+
+        NextPoint();
+    }
+
+    private IEnumerator ProcessEatingGuest()
+    {
+        int money = GameData.Instance.BreadPrice * CurrentTakeCount;
+
+        transform.position = Controller.ChairPoint.position;
+        Animator.SetBool("IsSitting", true);
+
+        Look(LookPoint);
+
+        Controller.EatingSpace.Seat();
+        RemoveBreadAll();
+        yield return new WaitForSeconds(2f);
+        Animator.SetBool("IsSitting", false);
+
+        IsArrive = false;
+
+        ResetEating();
+
+        Controller.EatingSpace.EatBread(money);
+        NextPoint();
+    }
+
+    private void ResetEating()
+    {
+        Controller.IsEating = false;
+        IsEating = false;
     }
 
     private void Look(Transform lookPoint)
@@ -224,17 +295,15 @@ public class Guest : Character
         TargetPoint = target;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.collider.CompareTag("Player") || collision.collider.CompareTag("Guest"))
+        if (other.CompareTag("Player") || other.CompareTag("Guest"))
         {
             RaycastHit[] hits;
             hits = Physics.RaycastAll(transform.position, transform.forward, 5f);
 
             for (int i = 0; i < hits.Length; i++)
             {
-                Debug.Log(hits[i].collider.name);
-
                 if (hits[i].collider.CompareTag("Guest"))
                 {
                     MoveOff();
@@ -248,9 +317,9 @@ public class Guest : Character
         }
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerExit(Collider other)
     {
-        if (collision.collider.CompareTag("Player") || collision.collider.CompareTag("Guest"))
+        if (other.CompareTag("Player") || other.CompareTag("Guest"))
         {
             if (false == IsArrive)
             {

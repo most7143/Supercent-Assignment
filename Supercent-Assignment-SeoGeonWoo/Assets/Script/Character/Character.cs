@@ -70,4 +70,15 @@ public class Character : MonoBehaviour
 
         ObjectPoolManager.Instance.Despawn(bread);
     }
+
+    public void RemoveBreadAll()
+    {
+        for (int i = 0; i < Breads.Count; i++)
+        {
+            ObjectPoolManager.Instance.Despawn(Breads[i]);
+        }
+
+        CurrentTakeCount = 0;
+        Breads.Clear();
+    }
 }

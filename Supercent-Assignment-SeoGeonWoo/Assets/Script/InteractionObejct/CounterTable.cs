@@ -45,6 +45,7 @@ public class CounterTable : InteractionObejct
         IsOperating = false;
         paperBag.transform.parent = guest.transform;
         paperBag.transform.position = guest.TakePoint.position;
+        guest.PaperBag = paperBag;
         IsCloseBag = true;
     }
 }

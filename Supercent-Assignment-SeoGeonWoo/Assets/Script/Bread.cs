@@ -17,8 +17,6 @@ public class Bread : MonoBehaviour
     public Rigidbody Rigid;
     public BoxCollider Collider;
 
-    public int Price = 5;
-
     public void Init(int sid)
     {
         SID = sid;
@@ -35,6 +33,7 @@ public class Bread : MonoBehaviour
     {
         IsActivate = false;
         gameObject.SetActive(false);
+        gameObject.transform.parent = ObjectPoolManager.Instance.transform;
         State = ObjectStates.None;
     }
 

@@ -7,6 +7,10 @@ public class GameData : MonoBehaviour
 
     public int Money;
 
+    public bool UsingEatingSpace;
+
+    public int BreadPrice = 5;
+
     private static GameData _instance;
 
     public static GameData Instance

@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PaperPoint: {fileID: 4786552271809381145}
+  MoneyTrigger: {fileID: 0}
 --- !u!1 &3469699711208051921
 GameObject:
   m_ObjectHideFlags: 0

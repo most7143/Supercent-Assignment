@@ -9,8 +9,9 @@ public enum GuestMovePoints
     DisplayTable,
     Counter,
     CounterReturn,
-    Exit,
+    EatingWaitPoint,
     EatingTable,
+    Exit,
 }
 
 public class GuestController : MonoBehaviour
@@ -25,11 +26,19 @@ public class GuestController : MonoBehaviour
 
     public Transform CounterReturnPoint;
 
+    public Transform EatingWaitPoint;
+
+    public Transform EatingSpacePoint;
+
+    public Transform ChairPoint;
+
     public Transform ExitPoint;
 
     public List<Transform> DisplayPoints;
 
     public CounterTable CounterTable;
+
+    public EatingSpace EatingSpace;
 
     private Dictionary<Transform, bool> _displayPoints = new();
 
@@ -37,7 +46,9 @@ public class GuestController : MonoBehaviour
 
     public int Interval = 1;
 
-    private int _currentCount;
+    public int CurrentCount { get; set; }
+
+    public bool IsEating;
 
     private void Start()
     {
@@ -66,9 +77,9 @@ public class GuestController : MonoBehaviour
 
         guest.transform.position = SpawnPoint.transform.position;
 
-        _currentCount++;
+        CurrentCount++;
 
-        yield return new WaitUntil(() => _currentCount < MaxCount);
+        yield return new WaitUntil(() => CurrentCount < MaxCount);
 
         StartCoroutine(ProcessSpawn());
     }
@@ -82,10 +93,20 @@ public class GuestController : MonoBehaviour
                     if (guest.MovePointCount == 0)
                     {
                         guest.CurrentMovePoint = GuestMovePoints.DisplayTable;
-                        return GetEmptyDisplay();
+                        guest.TargetDisplayPoint = GetEmptyDisplay();
+                        return guest.TargetDisplayPoint;
+                    }
+                    else if (guest.IsEating)
+                    {
+                        LeaveDisplayPoint(guest.TargetDisplayPoint);
+
+                        guest.CurrentMovePoint = GuestMovePoints.EatingWaitPoint;
+                        return EatingWaitPoint;
                     }
                     else
                     {
+                        LeaveDisplayPoint(guest.TargetDisplayPoint);
+
                         guest.CurrentMovePoint = GuestMovePoints.Counter;
                         return CounterPoint;
                     }
@@ -101,9 +122,15 @@ public class GuestController : MonoBehaviour
                     return CounterReturnPoint;
                 }
             case GuestMovePoints.CounterReturn:
+            case GuestMovePoints.EatingTable:
                 {
                     guest.CurrentMovePoint = GuestMovePoints.Exit;
                     return ExitPoint;
+                }
+            case GuestMovePoints.EatingWaitPoint:
+                {
+                    guest.CurrentMovePoint = GuestMovePoints.EatingTable;
+                    return EatingSpacePoint;
                 }
         }
 
@@ -123,5 +150,10 @@ public class GuestController : MonoBehaviour
         }
 
         return null;
+    }
+
+    private void LeaveDisplayPoint(Transform displayPoint)
+    {
+        _displayPoints[displayPoint] = false;
     }
 }

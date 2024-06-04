@@ -77,7 +77,6 @@ public class MoneyTrigger : InteractionObejct
     private void GetMoney()
     {
         GameData.Instance.AddMoney(Money);
-        Debug.Log("°ñµå " + Money.ToString() + " È¹µæ");
     }
 
     private IEnumerator ProcessClearMoney(int count)
