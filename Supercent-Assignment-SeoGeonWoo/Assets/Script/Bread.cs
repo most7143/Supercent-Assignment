@@ -17,6 +17,8 @@ public class Bread : MonoBehaviour
     public Rigidbody Rigid;
     public BoxCollider Collider;
 
+    public int Price = 5;
+
     public void Init(int sid)
     {
         SID = sid;

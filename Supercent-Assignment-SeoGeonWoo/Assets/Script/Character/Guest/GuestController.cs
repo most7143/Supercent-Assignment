@@ -8,6 +8,7 @@ public enum GuestMovePoints
     Center,
     DisplayTable,
     Counter,
+    CounterReturn,
     Exit,
     EatingTable,
 }
@@ -20,11 +21,17 @@ public class GuestController : MonoBehaviour
 
     public Transform DisplayTable;
 
+    public Transform CounterPoint;
+
+    public Transform CounterReturnPoint;
+
+    public Transform ExitPoint;
+
     public List<Transform> DisplayPoints;
 
-    private Dictionary<Transform, bool> _displayPoints = new();
+    public CounterTable CounterTable;
 
-    public Transform CounterPoint;
+    private Dictionary<Transform, bool> _displayPoints = new();
 
     public int MaxCount = 4;
 
@@ -90,8 +97,13 @@ public class GuestController : MonoBehaviour
                 }
             case GuestMovePoints.Counter:
                 {
+                    guest.CurrentMovePoint = GuestMovePoints.CounterReturn;
+                    return CounterReturnPoint;
+                }
+            case GuestMovePoints.CounterReturn:
+                {
                     guest.CurrentMovePoint = GuestMovePoints.Exit;
-                    return SpawnPoint;
+                    return ExitPoint;
                 }
         }
 

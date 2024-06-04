@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Guest : Character
 {
@@ -12,7 +13,11 @@ public class Guest : Character
 
     public Vector3 UIOffset;
 
-    public GameObject UINeedObject;
+    public RectTransform UIRect;
+
+    public Transform UINeedObject;
+
+    public Image UIPayIcon;
 
     public TextMeshProUGUI UINeedCountText;
 
@@ -41,20 +46,31 @@ public class Guest : Character
 
     private void FollowUI()
     {
+        UIRect.transform.position = Camera.main.WorldToScreenPoint(transform.position + UIOffset);
+
         if (IsArrive && CurrentMovePoint == GuestMovePoints.DisplayTable)
         {
-            UINeedObject.transform.position = Camera.main.WorldToScreenPoint(transform.position + UIOffset);
+            UIPayIcon.gameObject.SetActive(false);
 
-            if (false == UINeedObject.activeInHierarchy)
+            if (false == UIRect.gameObject.activeInHierarchy)
             {
-                RefreshText();
+                UIRect.gameObject.SetActive(true);
+            }
+
+            RefreshText();
+        }
+        else if (Breads.Count > 0)
+        {
+            if (false == UIPayIcon.gameObject.activeInHierarchy)
+            {
+                UIPayIcon.gameObject.SetActive(true);
             }
         }
         else
         {
-            if (UINeedObject.activeInHierarchy)
+            if (UIRect.gameObject.activeInHierarchy)
             {
-                UINeedObject.SetActive(false);
+                UIRect.gameObject.SetActive(false);
             }
         }
     }
@@ -107,6 +123,14 @@ public class Guest : Character
 
             StartCoroutine(ProcessTakeBread());
         }
+        else if (CurrentMovePoint == GuestMovePoints.Counter)
+        {
+            StartCoroutine(ProcessPayMoneyByBread());
+        }
+        else if (CurrentMovePoint == GuestMovePoints.Exit)
+        {
+            ObjectPoolManager.Instance.Despawn(this);
+        }
         else
         {
             NextPoint();
@@ -115,13 +139,41 @@ public class Guest : Character
 
     private IEnumerator ProcessTakeBread()
     {
-        int rand = Random.Range(3, 5);
+        int rand = Random.Range(3, 6);
 
         MaxTakeBreadCount = rand;
 
         yield return new WaitUntil(() => MaxTakeBreadCount == CurrentTakeCount);
 
         IsArrive = false;
+        NextPoint();
+    }
+
+    private IEnumerator ProcessPayMoneyByBread()
+    {
+        yield return new WaitUntil(() => Controller.CounterTable.IsOperating);
+
+        int money = Breads[0].Price * CurrentTakeCount;
+
+        Controller.CounterTable.MoneyTrigger.Money += money;
+
+        for (int i = Breads.Count - 1; i >= 0; i--)
+        {
+            ObjectPoolManager.Instance.Despawn(Breads[i]);
+            yield return new WaitForSeconds(0.3f);
+        }
+
+        IsArrive = false;
+
+        Breads.Clear();
+
+        StartCoroutine(Controller.CounterTable.ProcessClose(this));
+
+        yield return new WaitUntil(() => Controller.CounterTable.IsCloseBag);
+        yield return new WaitUntil(() => false == Controller.CounterTable.MoneyTrigger.IsOperating);
+
+        Controller.CounterTable.MoneyTrigger.DropMoney();
+
         NextPoint();
     }
 
@@ -179,25 +231,18 @@ public class Guest : Character
             RaycastHit[] hits;
             hits = Physics.RaycastAll(transform.position, transform.forward, 5f);
 
-            int checkCount = 0;
-
             for (int i = 0; i < hits.Length; i++)
             {
                 Debug.Log(hits[i].collider.name);
 
                 if (hits[i].collider.CompareTag("Guest"))
                 {
-                    checkCount++;
+                    MoveOff();
                 }
                 else if (hits[i].collider.CompareTag("Player"))
                 {
                     MoveOff();
                     return;
-                }
-
-                if (checkCount > 2)
-                {
-                    MoveOff();
                 }
             }
         }
@@ -216,7 +261,7 @@ public class Guest : Character
 
     public void RefreshText()
     {
-        UINeedObject.SetActive(true);
+        UINeedObject.gameObject.SetActive(true);
         UINeedCountText.SetText((MaxTakeBreadCount - CurrentTakeCount).ToString());
     }
 }

@@ -21,7 +21,13 @@ public class ObjectPoolManager : MonoBehaviour
 
     public GameObject Guest;
 
+    public Dictionary<int, PaperBag> PaperBags = new();
+
+    public GameObject PaperBag;
+
     public GameObject Money;
+
+    public Dictionary<int, Money> Moneies = new();
 
     public static ObjectPoolManager Instance
     {
@@ -60,6 +66,22 @@ public class ObjectPoolManager : MonoBehaviour
             guest.transform.parent = transform;
             Guests.Add(i, guest);
             guest.Init();
+        }
+
+        for (int i = 0; i < 10; i++)
+        {
+            PaperBag paperBag = Instantiate(PaperBag, Vector3.zero, Quaternion.identity).GetComponent<PaperBag>();
+            paperBag.Init();
+            paperBag.transform.parent = transform;
+            PaperBags.Add(i, paperBag);
+        }
+
+        for (int i = 0; i < 60; i++)
+        {
+            Money money = Instantiate(Money, Vector3.zero, Quaternion.identity).GetComponent<Money>();
+            money.Init();
+            money.transform.parent = transform;
+            Moneies.Add(i, money);
         }
     }
 
@@ -104,6 +126,34 @@ public class ObjectPoolManager : MonoBehaviour
         return null;
     }
 
+    public PaperBag SpawnPaperBag()
+    {
+        for (int i = 0; i <= PaperBags.Count; i++)
+        {
+            if (false == PaperBags[i].IsActivate)
+            {
+                PaperBags[i].Activate();
+                return PaperBags[i];
+            }
+        }
+
+        return null;
+    }
+
+    public Money SpawnMoney()
+    {
+        for (int i = 0; i < Moneies.Count; i++)
+        {
+            if (false == Moneies[i].IsActivate)
+            {
+                Moneies[i].Activate();
+                return Moneies[i];
+            }
+        }
+
+        return null;
+    }
+
     public Bread Spawn(ObjectStates state)
     {
         for (int i = 0; i <= Breads.Count; i++)
@@ -113,6 +163,22 @@ public class ObjectPoolManager : MonoBehaviour
                 Breads[i].Activate();
                 Breads[i].State = state;
                 return Breads[i];
+            }
+        }
+
+        return null;
+    }
+
+    public Guest FindArrivedGuest(GuestMovePoints guestMove)
+    {
+        for (int i = 0; i < Guests.Count; i++)
+        {
+            if (Guests[i].IsArrive)
+            {
+                if (Guests[i].CurrentMovePoint == guestMove)
+                {
+                    return Guests[i];
+                }
             }
         }
 
@@ -146,6 +212,30 @@ public class ObjectPoolManager : MonoBehaviour
             if (Guests[i] == guest)
             {
                 Guests[i].Deactivate();
+                break;
+            }
+        }
+    }
+
+    public void Despawn(PaperBag paperBag)
+    {
+        for (int i = 0; i <= PaperBags.Count; i++)
+        {
+            if (PaperBags[i] == paperBag)
+            {
+                Guests[i].Deactivate();
+                break;
+            }
+        }
+    }
+
+    public void Despawn(Money money)
+    {
+        for (int i = 0; i <= Moneies.Count; i++)
+        {
+            if (Moneies[i] == money)
+            {
+                Moneies[i].Deactivate();
                 break;
             }
         }

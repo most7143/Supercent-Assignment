@@ -31,12 +31,12 @@ public partial class DisplayTable
     {
         yield return new WaitUntil(() => IsTakeable);
 
-        Guest guest = GetNeedestGuest();
-
         int count = _currentCount;
 
         for (int i = 0; i < count; i++)
         {
+            Guest guest = GetNeedestGuest();
+
             _currentCount--;
 
             int breadSID = GetTakeableBread();

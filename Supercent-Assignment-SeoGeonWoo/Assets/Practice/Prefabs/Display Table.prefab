@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc4917e1f5df29044a4218d07aba4f01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxCount: 8
   DisplayPoints:
   - {fileID: 7814139412641894934}
   - {fileID: 7814139414075005413}
@@ -59,7 +60,7 @@ MonoBehaviour:
   - {fileID: 7814139413013446451}
   - {fileID: 7814139412749608652}
   - {fileID: 7814139412977389065}
-  MaxCount: 8
+  IsTakeable: 0
 --- !u!54 &6806634802988745798
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -87,7 +88,7 @@ GameObject:
   - component: {fileID: 4113663919002952344}
   - component: {fileID: 1252175628514028399}
   m_Layer: 0
-  m_Name: ww
+  m_Name: Pannel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -250,6 +251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsActivate: 0
+  Bread: {fileID: 0}
 --- !u!1 &7814139412641894933
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,6 +297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsActivate: 0
+  Bread: {fileID: 0}
 --- !u!1 &7814139412749608651
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,6 +343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsActivate: 0
+  Bread: {fileID: 0}
 --- !u!1 &7814139412977389064
 GameObject:
   m_ObjectHideFlags: 0
@@ -385,6 +389,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsActivate: 0
+  Bread: {fileID: 0}
 --- !u!1 &7814139413013446450
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,6 +435,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsActivate: 0
+  Bread: {fileID: 0}
 --- !u!1 &7814139413957134061
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,6 +481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsActivate: 0
+  Bread: {fileID: 0}
 --- !u!1 &7814139414075005412
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,6 +527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsActivate: 0
+  Bread: {fileID: 0}
 --- !u!1 &7814139414389968739
 GameObject:
   m_ObjectHideFlags: 0
@@ -565,6 +573,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsActivate: 0
+  Bread: {fileID: 0}
 --- !u!1 &8989889247171818906
 GameObject:
   m_ObjectHideFlags: 0

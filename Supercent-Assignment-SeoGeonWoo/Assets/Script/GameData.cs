@@ -1,8 +1,11 @@
+using TMPro;
 using UnityEngine;
 
 public class GameData : MonoBehaviour
 {
-    public int Gold;
+    public TextMeshProUGUI MoneyText;
+
+    public int Money;
 
     private static GameData _instance;
 
@@ -19,18 +22,26 @@ public class GameData : MonoBehaviour
         }
     }
 
-    public void AddGold(int gold)
+    private void Awake()
     {
-        Gold += gold;
+        _instance = this;
     }
 
-    public bool TryUseGold(int gold)
+    public void AddMoney(int money)
     {
-        return Gold >= gold;
+        Money += money;
+
+        MoneyText.SetText(Money.ToString());
     }
 
-    public void UseGold(int gold)
+    public bool TryUseMoney(int money)
     {
-        Gold -= gold;
+        return Money >= money;
+    }
+
+    public void UseMoney(int money)
+    {
+        Money -= money;
+        MoneyText.SetText(Money.ToString());
     }
 }
