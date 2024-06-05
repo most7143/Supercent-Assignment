@@ -408,6 +408,7 @@ GameObject:
   - component: {fileID: 4541141870242516323}
   - component: {fileID: 971556608106169826}
   - component: {fileID: 2087630573717729627}
+  - component: {fileID: 7308998209116042579}
   - component: {fileID: 2897004099679056706}
   - component: {fileID: 8282929482932559464}
   m_Layer: 10
@@ -470,23 +471,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Animator: {fileID: 971556608106169826}
   Rigid: {fileID: 2897004099679056706}
-  MoveSpeed: 3
+  MoveSpeed: 4
   TakePoint: {fileID: 3264421924630018531}
   Breads: []
   Controller: {fileID: 0}
   Offset: {x: 0, y: 1, z: -0.6}
   MovePointCount: 0
+  IsEating: 0
+  PaperBag: {fileID: 0}
+  FollowUI: {fileID: 7308998209116042579}
+  IsArrive: 0
+  MaxTakeBreadCount: 0
+--- !u!114 &7308998209116042579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3769144362882373593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53f83f666a45e804a8d73199e169f467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Guest: {fileID: 2087630573717729627}
   UIOffset: {x: 0, y: 2.3, z: 0}
-  UICanvas: {fileID: 5177391297017684970}
+  UICanvasGroup: {fileID: 8466233259613971825}
   UIRect: {fileID: 3610673820891651547}
-  UINeedObject: {fileID: 473515440925156835}
+  UITakeBread: {fileID: 473515440925156835}
   UIPayIcon: {fileID: 6617379369565332905}
   UiTableIcon: {fileID: 8752334177787617495}
   UINeedCountText: {fileID: 4974707917192209842}
-  IsEating: 0
-  PaperBag: {fileID: 0}
-  IsArrive: 0
-  MaxTakeBreadCount: 0
 --- !u!54 &2897004099679056706
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -974,6 +989,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1905702945175958596}
   - component: {fileID: 5177391297017684970}
+  - component: {fileID: 8466233259613971825}
   m_Layer: 10
   m_Name: Canvas
   m_TagString: Untagged
@@ -1009,7 +1025,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5842646189227178212}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 0}
@@ -1023,6 +1039,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!225 &8466233259613971825
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5842646189227178212}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5988245659254116269
 GameObject:
   m_ObjectHideFlags: 0

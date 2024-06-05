@@ -20,7 +20,7 @@ public class GuestController : MonoBehaviour
 
     public Transform CenterPoint;
 
-    public Transform DisplayTable;
+    public DisplayTable DisplayTable;
 
     public Transform CounterPoint;
 

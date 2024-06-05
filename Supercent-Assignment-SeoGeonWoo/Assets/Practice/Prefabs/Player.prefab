@@ -847,14 +847,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0035c25a3d58bd40a65e3d63c14056f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Joystick: {fileID: 0}
-  Rigid: {fileID: 333445987}
-  MoveSpeed: 3
   Animator: {fileID: 2929470082773406066}
-  State: 0
+  Rigid: {fileID: 333445987}
+  MoveSpeed: 4
   TakePoint: {fileID: 8372364683648498127}
-  TakeBreadY: 0
   Breads: []
+  Joystick: {fileID: 0}
 --- !u!54 &333445987
 Rigidbody:
   m_ObjectHideFlags: 0

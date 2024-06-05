@@ -37,6 +37,12 @@ public partial class DisplayTable
         {
             Guest guest = GetNeedestGuest();
 
+            if (guest == null)
+            {
+                IsTakeable = false;
+                break;
+            }
+
             _currentCount--;
 
             int breadSID = GetTakeableBread();
@@ -45,7 +51,15 @@ public partial class DisplayTable
             {
                 ObjectPoolManager.Instance.DespawnBread(breadSID);
                 SpawnToGuestHand(guest);
-                yield return new WaitForSeconds(0.2f);
+
+                if (guest.CurrentTakeCount == guest.MaxTakeBreadCount)
+                {
+                    yield return new WaitForSeconds(0.6f);
+                }
+                else
+                {
+                    yield return new WaitForSeconds(0.2f);
+                }
             }
         }
 
@@ -70,19 +84,26 @@ public partial class DisplayTable
     {
         Guest[] guests = GetTakeableGuests();
 
-        int needCount = guests[0].MaxTakeBreadCount - guests[0].CurrentTakeCount;
-        int guestIndex = 0;
-
-        for (int i = 0; i < guests.Length; i++)
+        if (guests.Length > 0)
         {
-            if (guests[i].MaxTakeBreadCount - guests[i].CurrentTakeCount <= needCount)
-            {
-                needCount = guests[i].MaxTakeBreadCount - guests[i].CurrentTakeCount;
-                guestIndex = i;
-            }
-        }
+            int needCount = guests[0].MaxTakeBreadCount - guests[0].CurrentTakeCount;
+            int guestIndex = 0;
 
-        return guests[guestIndex];
+            for (int i = 0; i < guests.Length; i++)
+            {
+                if (guests[i].MaxTakeBreadCount - guests[i].CurrentTakeCount <= needCount)
+                {
+                    needCount = guests[i].MaxTakeBreadCount - guests[i].CurrentTakeCount;
+                    guestIndex = i;
+                }
+            }
+
+            return guests[guestIndex];
+        }
+        else
+        {
+            return null;
+        }
     }
 
     private void SpawnToGuestHand(Guest guest)
@@ -98,7 +119,7 @@ public partial class DisplayTable
             bread.transform.parent = guest.transform;
             guest.AddBread(bread);
             guest.CarryOn();
-            guest.RefreshText();
+            guest.FollowUI.RefreshText();
         }
     }
 }

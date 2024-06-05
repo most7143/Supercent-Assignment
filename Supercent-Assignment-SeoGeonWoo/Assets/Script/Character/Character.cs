@@ -11,7 +11,7 @@ public class Character : MonoBehaviour
 
     public Transform TakePoint;
 
-    public List<Bread> Breads;
+    public List<Bread> Breads { get; set; }
     public int CurrentTakeCount { get; set; }
 
     public bool IsStack { get; set; }
@@ -64,7 +64,7 @@ public class Character : MonoBehaviour
     {
         Bread bread = Breads[Breads.Count - 1];
 
-        Breads.Remove(bread);
+        Breads.RemoveAt(Breads.Count - 1);
 
         CurrentTakeCount--;
 
